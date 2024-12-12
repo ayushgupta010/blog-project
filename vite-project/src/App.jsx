@@ -1,16 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import './App.css'
+import authService from './appwrite/auth'
+import { login, logout } from './store/authSlice'
+import Header from './components/header/header'
+import Footer from './components/footer/footer'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [loading, setloading] = useState(true)
+  const dispatch = useDispatch()
 
-  return (
-    <>
-      <h1> Caxas Blogs</h1>
-    </>
-  )
+  useEffect(() => {
+    authService.getCurrentUser()
+    .then((userData) => {
+      if(userData){
+        dispatch(login({userData}))
+      }
+      else{
+        dispatch(logout())
+      }
+    })
+    .finally(() => setloading(false))
+  }, [])
+
+  return !loading ? (
+    <div className='min-h-screen flex flex-wrap content-between bg-gray-400'>
+      <div className='w-full block'>
+        <Header />
+        <main>
+        TODO: 
+        </main>
+        <Footer />
+      </div>
+    </div>
+  ) : null
 }
 
 export default App

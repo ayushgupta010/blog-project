@@ -60,6 +60,6 @@ async logout() {
 
 }
 
-const authService = new AuthService();
+const authService = new Authservice();
 
 export default authService
